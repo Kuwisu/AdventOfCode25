@@ -6,23 +6,6 @@ FILENAME = "input.txt"
 PART = 2
 
 
-def allEquals(l):
-    """
-    Compute whether every value in a list is the same.
-
-    :param l: the list of values to compare
-    :return: True if all values are the same, False otherwise
-    """
-    if len(l) == 0:
-        return True
-
-    for x in l:
-        if x != l[0]:
-            return False
-
-    return True
-
-
 def isIdValid(id):
     """
     Compute whether an ID is valid, where invalid IDs are composed of multiple sequences of repeating numbers
@@ -33,26 +16,34 @@ def isIdValid(id):
     """
     id_string = str(id)
     length = len(id_string)
-    division = 2
+    num_slices = 2
 
     # Evaluate every way of evenly slicing the string
-    while division <= length:
-        if length % division == 0:
-            values = []
-            # Cut the string into a set of slices and determine if they are equal
-            for i in range(division):
-                start = int((length / division) * i)
-                end = int((length / division) * (i + 1))
-                values.append(id_string[start:end])
+    while num_slices <= length:
+        if length % num_slices == 0:
+            # Cut the string into a set of slices and check them for equality
+            seq_value = -1
+            is_sequence_valid = False
+            for i in range(num_slices):
+                start = int((length / num_slices) * i)
+                end = int((length / num_slices) * (i + 1))
+                slice_value = id_string[start:end]
 
-            if allEquals(values):
+                # If the segment differs from a previous segment, the ID is valid
+                if seq_value == -1:
+                    seq_value = slice_value
+                elif seq_value != slice_value:
+                    is_sequence_valid = True
+                    break
+
+            if not is_sequence_valid:
                 return False
 
         # To solve part 1, only evaluate 2 slices
         if PART == 1:
             break
 
-        division += 1
+        num_slices += 1
 
     return True
 
