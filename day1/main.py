@@ -1,0 +1,79 @@
+import math
+import re
+
+START_POSITION = 50
+# Input file must be a series of values that fit the specifications of parseRotation, separated by new lines.
+FILENAME = "input.txt"
+PART = 2
+
+def rotateDial(position, distance):
+    """
+    Rotates the dial according to the following rules:\n
+    - Turning the dial left from 0 one click makes it point to 99, or right from 99 one click to 0.
+    - PART 2 ONLY: If any click causes the dial to point to 0, it should increment the password.
+
+    :param position: the current position of the dial
+    :param distance: the number of clicks that the dial must move through
+    :return: a tuple (result, clicks) where result is the position of the dial after rotation and clicks is the amount to increment the password by (for part 2).
+    """
+    m = -100 if distance < 0 else 100
+    clicks = 1
+
+    if PART == 2:
+        clicks += math.floor((distance / m))
+
+    result = position + (distance % m)
+    # Do not count a click if the result does not pass 0
+    if PART == 1 or (100 >= result >= 0 or position == 0):
+        clicks -= 1
+
+    if result < 0:
+        result = 100 + result
+    elif result > 99:
+        result = result - 100
+
+    return result, clicks
+
+def parseRotationCode(rotation):
+    """
+    Parse the number of clicks left or right that the dial must travel based on the input text according to the
+    following rules:\n
+    - A rotation starts with an L or R which indicates whether the rotation should toward lower or higher numbers.
+    - Then, the rotation has a distance value which indicates how many clicks the dial must move in that direction.
+
+    :param rotation: A string in the format '<direction><distance>' where direction is L or R and distance is an integer greater than 1.
+    :return: An integer number of clicks for the dial to travel, negative if left and positive if right.
+    """
+    pattern = re.compile(r"^(?P<rotation>[LR])"
+                         r"(?P<distance>[0-9]+)$")
+    match = pattern.match(rotation)
+
+    if match.group("rotation") == "L":
+        return -int(match.group("distance"))
+    return int(match.group("distance"))
+
+def __main__(sequence):
+    """
+    Rotate a dial according to a sequence of rotations and return a password computed based on the number of times the
+    dial ends on 0 (for Part 1) or passes 0 (for Part 2).
+
+    :param sequence: a list of rotation code strings fitting specifications set in parseRotationCode
+    :return: the computed integer password to open the door
+    """
+    position = START_POSITION
+    password = 0
+    for rotation in sequence:
+        distance = parseRotationCode(rotation)
+        position, clicks = rotateDial(position, distance)
+
+        password += clicks
+        if position == 0:
+            password += 1
+
+    return password
+
+if __name__ == "__main__":
+    with open(FILENAME) as f:
+        fileContents = f.read()
+        sequence = fileContents.split("\n")
+        print(__main__(sequence))
