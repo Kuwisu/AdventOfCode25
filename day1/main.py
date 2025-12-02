@@ -1,5 +1,6 @@
 import math
 import re
+import time
 
 START_POSITION = 50
 # Input file must be a series of values that fit the specifications of parseRotation, separated by new lines.
@@ -81,7 +82,10 @@ def __main__(sequence):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     with open(FILENAME) as f:
         fileContents = f.read()
         sequence = fileContents.split("\n")
         print(__main__(sequence))
+
+    print(f"Time elapsed: {time.time() - start_time}s")
