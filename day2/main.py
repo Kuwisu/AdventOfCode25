@@ -6,44 +6,49 @@ FILENAME = "input.txt"
 PART = 2
 
 
+def areSegmentsEqual(string, num_segments):
+    """
+    Determine whether all segments are equal for a number string segmented into even parts.
+
+    :param string: a string containing the number to evaluate
+    :param num_segments: the number of segments to split the string into
+    :return: True if all segments are equal, false otherwise
+    """
+    first_segment = -1
+    for i in range(num_segments):
+        start = int((len(string) / num_segments) * i)
+        end = int((len(string) / num_segments) * (i + 1))
+        segment = string[start:end]
+
+        if first_segment == -1:
+            first_segment = segment
+        elif segment != first_segment:
+            return False
+
+    return True
+
+
 def isIdValid(id):
     """
-    Compute whether an ID is valid, where invalid IDs are composed of multiple sequences of repeating numbers
-    (for Part 1, this is limited to 2).
+    Compute whether an ID is valid, where invalid IDs are composed of multiple segments of repeating numbers
+    (for Part 1, this is limited to 2 segments).
 
     :param id: an integer ID to evaluate
     :return: True if the ID is valid, False otherwise
     """
     id_string = str(id)
-    length = len(id_string)
-    num_slices = 2
+    num_segments = 2
 
-    # Evaluate every way of evenly slicing the string
-    while num_slices <= length:
-        if length % num_slices == 0:
-            # Cut the string into a set of slices and check them for equality
-            seq_value = -1
-            is_sequence_valid = False
-            for i in range(num_slices):
-                start = int((length / num_slices) * i)
-                end = int((length / num_slices) * (i + 1))
-                slice_value = id_string[start:end]
+    # Evaluate every way of evenly segmenting the string for equality
+    while num_segments <= len(id_string):
+        if len(id_string) % num_segments == 0 and areSegmentsEqual(id_string, num_segments):
+            return False
 
-                # If the segment differs from a previous segment, the ID is valid
-                if seq_value == -1:
-                    seq_value = slice_value
-                elif seq_value != slice_value:
-                    is_sequence_valid = True
-                    break
-
-            if not is_sequence_valid:
-                return False
-
-        # To solve part 1, only evaluate 2 slices
+        # To solve part 1, only evaluate 2 segments
         if PART == 1:
             break
 
-        num_slices += 1
+        num_segments += 1
 
     return True
 

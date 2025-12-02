@@ -2,6 +2,7 @@ import math
 import re
 import time
 
+
 START_POSITION = 50
 # Input file must be a series of values that fit the specifications of parseRotation, separated by new lines.
 FILENAME = "input.txt"
