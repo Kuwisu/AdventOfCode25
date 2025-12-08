@@ -32,7 +32,7 @@ def getMaxJoltage(bank):
     return int("".join(max_joltage))
 
 
-def __main__(sequence):
+def main(sequence):
     """
     For a sequence of battery banks, get the maximum joltage of each and sum them together.
 
@@ -51,6 +51,6 @@ if __name__ == "__main__":
     with open(FILENAME) as f:
         fileContents = f.read()
         sequence = fileContents.split("\n")
-        print(__main__(sequence))
+        print(main(sequence))
 
     print(f"Time elapsed: {time.time() - start_time}s")

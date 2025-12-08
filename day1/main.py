@@ -61,7 +61,7 @@ def parseRotationCode(rotation):
     return int(match.group("distance")) * (-1 if is_left else 1)
 
 
-def __main__(sequence):
+def main(sequence):
     """
     Rotate a dial according to a sequence of rotations and return a password computed based on the number of times the
     dial ends on 0 (for both parts) or passes 0 (only for Part 2).
@@ -87,6 +87,6 @@ if __name__ == "__main__":
     with open(FILENAME) as f:
         fileContents = f.read()
         sequence = fileContents.split("\n")
-        print(__main__(sequence))
+        print(main(sequence))
 
     print(f"Time elapsed: {time.time() - start_time}s")

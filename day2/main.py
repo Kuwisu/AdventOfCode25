@@ -82,7 +82,7 @@ def parseIdRange(range):
     return int(match.group("start")), int(match.group("end"))
 
 
-def __main__(sequence):
+def main(sequence):
     """
     Return the sum of every invalid integer in a sequence of integer ranges. Invalid integers are composed of two
     sequences of repeating numbers.
@@ -103,6 +103,6 @@ if __name__ == "__main__":
     with open(FILENAME) as f:
         fileContents = f.read()
         sequence = fileContents.split(",")
-        print(__main__(sequence))
+        print(main(sequence))
 
     print(f"Time elapsed: {time.time() - start_time}s")
