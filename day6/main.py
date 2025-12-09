@@ -4,7 +4,7 @@ from day6.part1 import solveProblemByRows
 from day6.part2 import solveProblemByDigits
 
 FILENAME = "input.txt"
-PART = 1
+PART = 2
 ROWS = 4 if FILENAME == "exampleInput.txt" else 5
 
 
