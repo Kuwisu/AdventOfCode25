@@ -37,3 +37,8 @@ So, in this example, 3 of the available ingredient IDs are fresh.
 
 Process the database file from the new inventory management system. How many of the available ingredient IDs are fresh?
 
+Your puzzle answer was 343329651880509.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
+
+At this point, you should return to your Advent calendar and try another puzzle.

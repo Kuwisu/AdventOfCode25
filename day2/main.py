@@ -1,6 +1,6 @@
-import re
 import time
 
+from utils import parseIdRange
 
 FILENAME = "input.txt"
 PART = 2
@@ -67,19 +67,6 @@ def getInvalidIdsInRange(start, end):
             invalid_list.append(i)
 
     return invalid_list
-
-
-def parseIdRange(range):
-    """
-    Parse a string corresponding to a range of integers into a start point and end point.
-
-    :param range: a string following the format '<start>-<end>' where start and end are integers and end > start.
-    :return: A tuple of integers (start, end)
-    """
-    pattern = re.compile(r"^(?P<start>[0-9]+)-(?P<end>[0-9]+)$")
-    match = pattern.match(range)
-
-    return int(match.group("start")), int(match.group("end"))
 
 
 def main(sequence):
