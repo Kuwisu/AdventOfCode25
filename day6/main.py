@@ -1,71 +1,42 @@
 import time
 
+from day6.part1 import solveProblemByRows
+from day6.part2 import solveProblemByDigits
+
 FILENAME = "input.txt"
 PART = 1
 ROWS = 4 if FILENAME == "exampleInput.txt" else 5
 
 
-def parseProblemRow(row):
+def getProblemColumns(rows):
     """
-    Convert a string of spaced numbers to a list of integers.
+    Split the problem sheet into a list of numeric tuples representing columns and a list of mathematical operators.
 
-    :param row: a string of spaced integers
-    :return: a list of integers
+    :param rows: the problem sheet, comprised of a list of strings of spaced numbers
+    :return: the columns for each problem
     """
-    # Remove leading space
-    if row[0] == " ":
-        row = row[1:]
+    columns = []
+    stripped_rows = [" ".join(row.split()) for row in rows]
+    symbols = stripped_rows[-1].split()
+    # Add a tuple containing each row in a column
+    for i in range(len(symbols)):
+        columns.append(tuple([int(row.split()[i]) for row in stripped_rows[:-1]]))
 
-    return [int(num) for num in row.split(" ")]
-
-
-def addColumn(numbers):
-    """
-    Add a tuple of integers together.
-
-    :param numbers: a tuple of integers to add
-    :return: the total sum
-    """
-    total = 0
-    for i in range(len(numbers)):
-        total += numbers[i]
-
-    return total
+    return columns, symbols
 
 
-def multiplyColumn(numbers):
-    """
-    Multiply a tuple of integers together.
-
-    :param numbers: a tuple of integers to multiply
-    :return: the total product
-    """
-    total = 1
-    for i in range(len(numbers)):
-        total = total * numbers[i]
-
-    return total
-
-
-def main(problem_rows):
+def main(rows):
     """
     Solve a mathematical problem sheet by summing or multiplying columns and adding the results together.
 
-    :param problem_rows: a list of ROWS-1 strings of spaced numbers and a string of spaced mathematical operators
+    :param rows: a list of ROWS-1 strings of spaced numbers and a string of spaced mathematical operators
     :return: the total sum
     """
-    problem_symbols = problem_rows[ROWS-1].split(" ")
-    problem_numbers = []
-    sum = 0
-    for i in range(ROWS - 1):
-        problem_numbers.append(parseProblemRow(problem_rows[i]))
-
-    # Solve each problem in the sheet and add the solutions together
-    for i in range(len(problem_symbols)):
-        if problem_symbols[i] == "+":
-            sum += addColumn([problem_number[i] for problem_number in problem_numbers])
-        elif problem_symbols[i] == "*":
-            sum += multiplyColumn([problem_number[i] for problem_number in problem_numbers])
+    columns, symbols = getProblemColumns(rows)
+    if PART == 1:
+        return solveProblemByRows(columns, symbols)
+    elif PART == 2:
+        return solveProblemByDigits(rows, columns, symbols)
 
     return sum
 
@@ -73,10 +44,8 @@ def main(problem_rows):
 if __name__ == '__main__':
     start_time = time.time()
     with open(FILENAME) as f:
-        fileContents = f.read().strip()
+        fileContents = f.read()
         problem_rows = fileContents.split("\n")
-        # Replace occurrences of multiple spaces with a single one
-        problem_rows = [" ".join(problem_row.split()) for problem_row in problem_rows]
         print(main(problem_rows))
 
     print(f"Time elapsed: {time.time() - start_time}s")
