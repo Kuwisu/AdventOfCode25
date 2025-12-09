@@ -1,42 +1,30 @@
 import time
 
+from day7.part1 import moveBeam
+from day7.part2 import countAllTimelines
+
 FILENAME = "input.txt"
-PART = 1
-
-
-def moveBeam(rows, x, y):
-    """
-    Recursively move the beam downward until it reaches the final point, counting 1 each time the beam splits.
-
-    :param rows: a list of strings representing the tachyon manifold
-    :param x: the current x coordinate of the beam
-    :param y: the current y coordinate of the beam
-    :return: a count of the number of times the beam has split after this call
-    """
-    # Skip if the beam has been split into an occupied space or if the bottom has been reached.
-    if rows[x][y] == "|" or x == len(rows) - 1:
-        return 0
-
-    # Update the current tile and move the beam downwards
-    rows[x] = f"{rows[x][:y]}|{rows[x][y+1:]}"
-    if rows[x+1][y] == ".":
-        return 0 + moveBeam(rows, x+1, y)
-    elif rows[x+1][y] == "^":
-        return 1 + moveBeam(rows, x+1, y-1) + moveBeam(rows, x+1, y+1)
-
-    return 0
+PART = 2
 
 
 def main(rows):
     """
-    Compute the number of times the beam splits when navigating a beam through a tachyon manifold.
+    Part 1: compute the number of times the beam splits when navigating a beam through a tachyon manifold.
+    Part 2: calculate the number of possible routes that the beam can take.
 
     :param rows: a list of strings representing the tachyon manifold
     :return: the number of times the beam has split
     """
+    start_location = ()
     for i in range(len(rows[0])):
         if rows[0][i] == "S":
-            return moveBeam(rows, 0, i)
+            start_location = (0, i)
+            print(start_location)
+
+    if PART == 1:
+        return moveBeam(rows, *start_location)
+    else:
+        return countAllTimelines(rows, start_location[1])
 
 
 if __name__ == '__main__':
